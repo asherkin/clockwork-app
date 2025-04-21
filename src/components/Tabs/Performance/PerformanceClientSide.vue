@@ -1,12 +1,12 @@
 <template>
 	<div class="performance-client-side">
-		<div class="counters-row performance-metrics" v-if="metrics.filter(m => m.value).length">
-			<div class="counter performance-chart-legend" v-if="metric.value" v-for="metric in metrics.filter(m => ! m.dom)">
+		<div class="counters-row performance-metrics" v-if="metricsWithValues.length">
+			<div class="counter performance-chart-legend" v-for="metric in metricsWithValues.filter(m => ! m.dom)">
 				<div class="counter-value">{{metric.value}} ms</div>
 				<div class="counter-title" :class="metric.color ? `has-mark mark-${metric.color}` : ''">{{metric.name}}</div>
 			</div>
 			<div class="counters-group right-aligned">
-				<div class="counter performance-chart-legend" v-if="metric.value" v-for="metric in metrics.filter(m => m.dom)">
+				<div class="counter performance-chart-legend" v-for="metric in metricsWithValues.filter(m => m.dom)">
 					<div class="counter-value">{{metric.value}} ms</div>
 					<div class="counter-title" :class="metric.color ? `has-mark mark-${metric.color}` : ''">{{metric.name}}</div>
 				</div>
@@ -122,7 +122,8 @@ export default {
 	components: { DetailsTable, PerformanceChart },
 	props: [ 'metrics', 'vitals' ],
 	computed: {
-		showVitalsInfo() { return this.$settings.global.performanceVitalsInfoShown }
+		showVitalsInfo() { return this.$settings.global.performanceVitalsInfoShown },
+		metricsWithValues() { return this.metrics.filter(m => m.value) }
 	},
 	methods: {
 		toggleVitalsInfo() {
